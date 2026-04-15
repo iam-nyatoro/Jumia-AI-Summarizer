@@ -1,0 +1,16 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+
+# Ignore the virtual environment
+venv/
+env/
+
+# Ignore the private API key file
+.env
+
+# Ignore Python cache files (speeds up your repo)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore Mac system files
+.DS_Store
