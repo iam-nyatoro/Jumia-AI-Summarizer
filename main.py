@@ -8,8 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-# 1. INITIALIZE CONFIGURATION
-# This pulls your API key from the .env file you just created
+ file you just created
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -18,7 +17,7 @@ if not API_KEY:
     print("Make sure you created a file named .env with: GEMINI_API_KEY=your_key_here")
     exit()
 
-# Setup Gemini
+
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -29,14 +28,11 @@ def get_jumia_reviews(url):
     """
     chrome_options = Options()
 
-    # Keeping headless OFF for now so you can verify it's working on your Mac
-    # chrome_options.add_argument("--headless")
-
-    # Adding a User-Agent makes the scraper look like a human browsing on a Mac
+    
     chrome_options.add_argument(
         "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
 
-    # Initialize the driver
+    
     driver = webdriver.Chrome(service=Service(
         ChromeDriverManager().install()), options=chrome_options)
     reviews = []
@@ -45,15 +41,11 @@ def get_jumia_reviews(url):
         print(f"🚀 Connecting to Jumia: {url}")
         driver.get(url)
 
-        # Jumia sometimes takes a moment to render the review section
-        time.sleep(6)
-
-        # Scroll down to ensure the review section is triggered/loaded
-        driver.execute_script("window.scrollTo(0, 1500);")
+        
+         driver.execute_script("window.scrollTo(0, 1500);")
         time.sleep(2)
 
-        # Jumia 2026 CSS Selectors for reviews
-        # We target the 'article' tag which usually contains individual reviews
+      
         review_elements = driver.find_elements(
             By.CSS_SELECTOR, "article.-pvs, .rev")
 
@@ -61,12 +53,12 @@ def get_jumia_reviews(url):
 
         for el in review_elements[:20]:  # Grab the top 20 reviews
             try:
-                # Typically, the review text is inside a class like '.cnt'
+                
                 text = el.find_element(By.CSS_SELECTOR, ".cnt").text.strip()
                 if len(text) > 5:
                     reviews.append(text)
             except:
-                # Fallback: if .cnt isn't found, grab the whole element text
+               
                 text = el.text.strip()
                 if len(text) > 10:
                     reviews.append(text)
@@ -86,7 +78,7 @@ def analyze_reviews(reviews_list):
     if not reviews_list:
         return "❌ I couldn't find any reviews to analyze. Check if the product actually has ratings."
 
-    # Join reviews into one big block of text for the AI
+    
     formatted_reviews = "\n---\n".join(reviews_list)
 
     prompt = f"""
@@ -111,7 +103,7 @@ def analyze_reviews(reviews_list):
         return f"❌ AI Analysis Error: {e}"
 
 
-# --- EXECUTION BLOCK ---
+
 if __name__ == "__main__":
     print("\n" + "="*40)
     print("🇰🇪 JUMIA AI REVIEW SUMMARIZER")
