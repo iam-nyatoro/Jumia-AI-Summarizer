@@ -1,6 +1,6 @@
 # 🛒 Jumia AI Review Summarizer
 
-A Python-based AI tool that scrapes customer reviews from **Jumia Kenya** and uses **Google Gemini 1.5 Flash** to provide a "Buy/Skip" verdict.
+A Python-based AI tool that scrapes customer reviews from **Jumia Kenya** and uses **Google Gemini** to provide a "Buy/Skip" verdict.
 
 ## 🚀 How it Works🔨🔨
 
